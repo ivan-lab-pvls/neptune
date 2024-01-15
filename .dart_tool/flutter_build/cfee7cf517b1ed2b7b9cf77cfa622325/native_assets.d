@@ -1,0 +1,1 @@
+ /Users/ivanlabasok/Downloads/neptune-main/.dart_tool/flutter_build/cfee7cf517b1ed2b7b9cf77cfa622325/native_assets.yaml: 
