@@ -1,19 +1,29 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:neptune/screens/main_menu.dart';
-import 'package:neptune/theme/default.dart';
-import 'package:neptune/timer/timer_bloc.dart';
+import 'package:neptune/const/core/config.dart';
+import 'package:neptune/const/core/notys.dart';
 
 import 'bloc/audio.dart';
 import 'router/router.dart';
-import 'timer/ticker.dart';
 
 final player = AudioPlayer();
 
-main() {
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: AppFirebaseOptions.currentPlatform);
+
+  await FirebaseRemoteConfig.instance.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(seconds: 9),
+    minimumFetchInterval: const Duration(seconds: 9),
+  ));
+
+  await FirebaseRemoteConfig.instance.fetchAndActivate();
+
+  await NotificationsFirebase().activate();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,

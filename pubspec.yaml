@@ -22,6 +22,11 @@ dependencies:
   just_audio: ^0.9.36
   provider: ^6.1.1
   share_plus: ^7.2.1
+  firebase_messaging: ^14.2.2
+  firebase_core: ^2.21.0
+  firebase_remote_config: ^4.3.3
+  overlay_support: ^2.1.0
+  flutter_local_notifications: ^9.8.0+1
 
 dev_dependencies:
   flutter_test:

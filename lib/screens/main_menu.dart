@@ -1,23 +1,53 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_exit_app/flutter_exit_app.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:neptune/const/color.dart';
+import 'package:neptune/main.dart';
 import 'package:neptune/router/router.dart';
+import 'package:neptune/screens/prem_screen/prem_screen.dart';
 import 'package:neptune/widgets/icon_button.dart';
 
 import '../bloc/audio.dart';
-import '../main.dart';
 
 @RoutePage()
-class MainMenuScreen extends StatelessWidget {
+class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainMenuScreen> createState() => _MainMenuScreenState();
+}
+
+class _MainMenuScreenState extends State<MainMenuScreen> {
+  String? prem;
+
+  @override
+  void initState() {
+    super.initState();
+    _isPrem();
+  }
+
+  Future<void> _isPrem() async {
+    final pd = FirebaseRemoteConfig.instance.getString('prem');
+
+    if (!pd.contains('isPrem')) {
+      await SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+      player.stop();
+      setState(() {
+        prem = pd;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final audioBloc = BlocProvider.of<AudioBloc>(context);
+
+    if (prem != null) {
+      return PremScreen(premIdentifier: prem!);
+    }
 
     return Scaffold(
       body: Container(
